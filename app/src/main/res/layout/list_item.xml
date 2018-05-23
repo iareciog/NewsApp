@@ -54,6 +54,7 @@ android:paddingStart="16dp">
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="end"
+            android:textColor="@android:color/black"
             android:textSize="12sp"
             tools:text="Mar 6, 2010" />
 
@@ -62,6 +63,7 @@ android:paddingStart="16dp">
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="end"
+            android:textColor="@android:color/black"
             android:textSize="12sp"
             tools:text="3:00 PM" />
 
