@@ -22,17 +22,18 @@ import java.util.List;
 public class MainActivity extends AppCompatActivity
         implements LoaderManager.LoaderCallbacks<List<News>> {
 
-    private static final String LOG_TAG = MainActivity.class.getName();
-
+    /** Loader id for the AsynkTaskLoader */
     private static final int NEWS_LOADER_ID = 1;
 
     /** Adapter for the list of news */
     private NewsAdapter mAdapter;
 
+    /**TextView for the Empty State */
     private TextView mEmptyStateTextView;
 
+    /** URL of the guardian site for obtain the news */
     private static final String GUARDIAN_REQUEST_URL =
-            "https://content.guardianapis.com/search?q=debate&tag=politics/politics&from-date=2014-01-01&api-key=test";
+            "https://content.guardianapis.com/search?q=debates&api-key=test&show-references=author";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,35 +42,37 @@ public class MainActivity extends AppCompatActivity
 
         // Find a reference to the {@link ListView} in the layout
         ListView newsListView = (ListView) findViewById(R.id.list);
-
+        // Find the {@link TextView} empty view in the layout
         mEmptyStateTextView = (TextView) findViewById(R.id.empty_view);
         newsListView.setEmptyView(mEmptyStateTextView);
 
-
-        // Create a new adapter that takes an empty list of earthquakes as input
+        // Create a new adapter that takes an empty list of news as input
         mAdapter = new NewsAdapter(this, new ArrayList<News>());
 
         // Set the adapter on the {@link ListView}
         // so the list can be populated in the user interface
         newsListView.setAdapter(mAdapter);
 
+        // Obtain the connectivity details for processing
         ConnectivityManager cm =
                 (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
 
+        // Get the info for active networks
         NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
 
+        // Obtain in boolean if is connected or not.
         final boolean isConnected = activeNetwork != null &&
                 activeNetwork.isConnectedOrConnecting();
 
         // Set an item click listener on the ListView, which sends an intent to a web browser
-        // to open a website with more information about the selected earthquake.
+        // to open a website with more information about the selected news.
         newsListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
-                // Find the current earthquake that was clicked on
+                // Find the current news that was clicked on
                 News currentEarthquake = mAdapter.getItem(position);
 
-                // Convert the String URL into a URI object (to pass into the Intent constructor)
+                // Convert the String URL into a URI object
                 Uri earthquakeUri = Uri.parse(currentEarthquake.getUrl());
 
                 // Create a new intent to view the earthquake URI
@@ -80,6 +83,12 @@ public class MainActivity extends AppCompatActivity
             }
         });
 
+        /*
+         * If isConnected is true the LoaderManager will execute the Async Task.
+         * If not. Find the loading spinner and change the view to gone and set the text for empty
+         * state.
+         */
+
         if (isConnected){
             // Get a reference to the LoaderManager, in order to interact with loaders.
             LoaderManager loaderManager = getLoaderManager();
@@ -87,7 +96,6 @@ public class MainActivity extends AppCompatActivity
             // Initialize the loader. Pass in the int ID constant defined above and pass in null for
             // the bundle. Pass in this activity for the LoaderCallbacks parameter (which is valid
             // because this activity implements the LoaderCallbacks interface).
-            Log.i("LOG_TAG", ".initLoader Executing...");
 
 
             loaderManager.initLoader(NEWS_LOADER_ID, null, this);
@@ -104,14 +112,12 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public Loader<List<News>> onCreateLoader(int i, Bundle bundle) {
-        Log.i("LOG_TAG", "onCreateLoader Executing" );
         return new NewsLoader(this, GUARDIAN_REQUEST_URL);
 
     }
 
     @Override
     public void onLoadFinished(Loader<List<News>> loader, List<News> earthquakes) {
-        Log.i("LOG_TAG", "onLoadFinished Executing..." );
         mEmptyStateTextView.setText(R.string.no_news);
         ProgressBar progressBar = (ProgressBar) findViewById(R.id.loading_spinner);
         progressBar.setVisibility(View.GONE);

@@ -9,11 +9,15 @@ import java.util.List;
 
 public class NewsLoader extends AsyncTaskLoader<List<News>> {
 
-    /** Tag for log messages */
-    private static final String LOG_TAG = NewsLoader.class.getName();
-
     /** Query URL */
     private String mUrl;
+
+    /**
+     * Constructs a new {@link NewsAdapter}.
+     *
+     * @param context of the activity
+     * @param url to load data from
+     */
 
     public NewsLoader(Context context, String url) {
         super(context);
@@ -22,19 +26,20 @@ public class NewsLoader extends AsyncTaskLoader<List<News>> {
 
     @Override
     protected void onStartLoading() {
-        Log.i("LOG_TAG", "onStartLoading Executing..." );
         forceLoad();
     }
 
+    /**
+     * This is on a background thread.
+     */
     @Override
     public List<News> loadInBackground() {
-        Log.i("LOG_TAG", "loadInBackground Executing..." );
 
         if (mUrl == null) {
             return null;
         }
 
-        List<News> result = QueryUtils.fetchEarthquakeData(mUrl);
-        return result;
+        List<News> result = QueryUtils.fetchNewsData(mUrl);
+        return result ;
     }
 }

@@ -17,6 +17,10 @@ import java.util.Locale;
 
 public class NewsAdapter extends ArrayAdapter<News> {
 
+    /** Separator for author */
+
+    private static final String LOCATION_SEPARATOR = "/";
+
     /**
      * Constructs a new {@link NewsAdapter}.
      *
@@ -48,30 +52,62 @@ public class NewsAdapter extends ArrayAdapter<News> {
             TextView titleView = (TextView) listItemView.findViewById(R.id.title);
             titleView.setText(currentNews.getTitle());
 
-            TextView categotyView = (TextView) listItemView.findViewById(R.id.category);
-            categotyView.setText(currentNews.getSectionName());
+            TextView categoryView = (TextView) listItemView.findViewById(R.id.category);
+            categoryView.setText(currentNews.getSectionName());
 
-            String publicationDate = currentNews.getPublicationDate();
-
-            Date formatDate = parseDate(publicationDate);
             // Find the TextView with view ID date
             TextView dateView = (TextView) listItemView.findViewById(R.id.date);
-            // Format the date string (i.e. "Mar 3, 1984")
-            String formattedDate = formatDate(formatDate);
-            // Display the date of the current earthquake in that TextView
-            dateView.setText(formattedDate);
+            // Get the publication date
+            String publicationDate = currentNews.getPublicationDate();
 
-            // Find the TextView with view ID time
-            TextView timeView = (TextView) listItemView.findViewById(R.id.time);
-            // Format the time string (i.e. "4:30PM")
-            String formattedTime = formatTime(formatDate);
-            // Display the time of the current earthquake in that TextView
-            timeView.setText(formattedTime);
+            if(publicationDate != null){
+                // Obtain the Date formatted by parseDate
+                Date formatDate = parseDate(publicationDate);
+                // Format the date string (i.e. "Mar 3, 1984")
+                String formattedDate = formatDate(formatDate);
+                // Display the date of the current earthquake in that TextView
+                dateView.setText(formattedDate);
+                // Find the TextView with view ID time
+                TextView timeView = (TextView) listItemView.findViewById(R.id.time);
+                // Format the time string (i.e. "4:30PM")
+                String formattedTime = formatTime(formatDate);
+                // Display the time of the current earthquake in that TextView
+                timeView.setText(formattedTime);
+            } else {
+                //Set the visibility to Gone
+                dateView.setVisibility(View.GONE);
+            }
+
+            // Find the TextView with view ID author
+            TextView authorView = (TextView) listItemView.findViewById(R.id.author);
+            // Get the author
+            String author = currentNews.getAuthor();
+            if(author != null){
+
+                String authorName;
+
+                // Check whether the author string contains the "/" text
+                if (author.contains(LOCATION_SEPARATOR)) {
+                    // Split the string into different parts (as an array of Strings)
+                    String[] parts = author.split(LOCATION_SEPARATOR);
+                    // Obtain the part 1 that should be the name
+                    authorName = "Author: " + parts[1];
+                } else {
+                    authorName = author;
+                }
+
+                authorView.setText(authorName);
+            }else{
+                //Set the visibility to Gone
+                authorView.setVisibility(View.GONE);
+            }
+
+
         }
         return listItemView;
     }
 
-
+    /** Convert the Date to a more readable date */
     private Date parseDate(String inputDate){
         Date date;
 
@@ -80,7 +116,7 @@ public class NewsAdapter extends ArrayAdapter<News> {
         try{
             date = dateFormat.parse(inputDate);
         }catch (ParseException ex){
-            Log.i("Parse Exception", ex.toString());
+            Log.e("Parse Exception", ex.toString());
             date = null;
         }
         return date;

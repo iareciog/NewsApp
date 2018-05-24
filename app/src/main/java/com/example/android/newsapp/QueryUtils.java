@@ -26,9 +26,7 @@ public final class QueryUtils {
     private QueryUtils() {
     }
 
-    public static List<News> fetchEarthquakeData(String requestUrl) {
-
-        Log.i("LOG_TAG", "fetchEarthquakeData Executing..." );
+    public static List<News> fetchNewsData(String requestUrl) {
 
         // Create URL object
         URL url = createUrl(requestUrl);
@@ -88,7 +86,7 @@ public final class QueryUtils {
                 Log.e(LOG_TAG, "Error response code: " + urlConnection.getResponseCode());
             }
         } catch (IOException e) {
-            Log.e(LOG_TAG, "Problem retrieving the earthquake JSON results.", e);
+            Log.e(LOG_TAG, "Problem retrieving the news JSON results.", e);
         } finally {
             if (urlConnection != null) {
                 urlConnection.disconnect();
@@ -134,13 +132,10 @@ public final class QueryUtils {
 
             // Create a JSONObject from the JSON response string
             JSONObject baseJsonResponse = new JSONObject(newsJSON);
-            Log.i("FIRST JSON OBJECT", baseJsonResponse.toString());
 
             JSONObject newsObject = baseJsonResponse.getJSONObject("response");
-            Log.i("RESPONSE OBJECT", newsObject.toString());
 
             JSONArray newsArray = newsObject.getJSONArray("results");
-            Log.i("LENGTH", String.valueOf(newsArray.length()));
 
             for (int i = 0; i < newsArray.length(); i++) {
 
@@ -148,22 +143,45 @@ public final class QueryUtils {
 
                 String sectionName = currentNews.getString("sectionName");
 
-                String publicationDate = currentNews.getString("webPublicationDate");
-
                 String title = currentNews.getString("webTitle");
 
                 String url = currentNews.getString("webUrl");
 
-                News news = new News(sectionName, publicationDate, title, url);
+                String publicationDate = currentNews.getString("webPublicationDate");
+                if(publicationDate != null){
+                    JSONArray references = null;
 
-                newsList.add(news);
+                    try {
+                        references = currentNews.getJSONArray("references");
+                    } catch (JSONException je) {
+                        Log.e("QueryUtils", "Problem parsing the news JSON results", je);
+                    }
+                    if (references != null && references.length() > 0) {
+                        for (int f = 0; f < references.length(); f++) {
+                            JSONObject currentReference = references.getJSONObject(f);
+
+                            String author = currentReference.getString("id");
+
+                            if (author.contains("author")) {
+                                News news = new News(sectionName, publicationDate, title, url, author);
+                                newsList.add(news);
+                            }
+                        }
+                    } else {
+                        News news = new News(sectionName, publicationDate, title, url);
+                        newsList.add(news);
+                    }
+                } else {
+                    News news = new News(sectionName, title, url);
+                    newsList.add(news);
+                }
             }
 
         } catch (JSONException e) {
-            Log.e("QueryUtils", "Problem parsing the earthquake JSON results", e);
+            Log.e("QueryUtils", "Problem parsing the news JSON results", e);
         }
 
-        // Return the list of earthquakes
+        // Return the list of news
         return newsList;
     }
 

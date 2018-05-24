@@ -3,39 +3,52 @@ package com.example.android.newsapp;
 public class News {
 
     /**
-     * Default translation for the word
+     * Section name of the News
      */
     private String mSectionName;
 
     /**
-     * Miwok translation for the word
+     * Publication date of the News
      */
     private String mPublicationDate;
 
     /**
-     * Audio resource ID for the word
+     * Title of the News
      */
     private String mTitle;
 
     /**
-     * URL for the info
+     * URL for the News
      */
     private String mUrl;
 
     /**
+     * Author of the News
+     */
+    private String mAuthor;
+
+    /**
      * Constructs a new {@link News} object.
      *
-     * @param sectionName          is the magnitude (size) of the earthquake
-     * @param publicationDate  is the city location of the earthquake
-     * @param title is the time in milliseconds (from the Epoch) when the
-     *                           earthquake happened
+     * @param sectionName is the Name for the section of the News
+     * @param title is the title for the news
+     * @param url is the URL for the news
      */
 
-    public News(String sectionName, String publicationDate, String title){
+    public News(String sectionName, String title, String url){
         mSectionName = sectionName;
-        mPublicationDate = publicationDate;
         mTitle = title;
+        mUrl = url;
     }
+
+    /**
+     * Constructs a new {@link News} object.
+     *
+     * @param sectionName is the Name for the section of the News
+     * @param publicationDate  is the date of the publication
+     * @param title is the title for the news
+     * @param url is the URL for the news
+     */
 
     public News(String sectionName, String publicationDate, String title, String url){
         mSectionName = sectionName;
@@ -43,6 +56,26 @@ public class News {
         mTitle = title;
         mUrl = url;
     }
+
+    /**
+     * Constructs a new {@link News} object.
+     *
+     * @param sectionName is the Name for the section of the News
+     * @param publicationDate  is the date of the publication
+     * @param title is the title for the news
+     * @param url is the URL for the news
+     * @param author is the author of the news
+     */
+
+    public News(String sectionName, String publicationDate, String title, String url, String author){
+        mSectionName = sectionName;
+        mPublicationDate = publicationDate;
+        mTitle = title;
+        mUrl = url;
+        mAuthor = author;
+    }
+
+    /** Getter methods for every parameter */
 
     public String getSectionName() { return mSectionName; }
 
@@ -52,5 +85,6 @@ public class News {
 
     public String getUrl() { return mUrl; }
 
+    public String getAuthor() { return mAuthor; }
 
 }
