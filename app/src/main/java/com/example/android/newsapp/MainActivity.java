@@ -33,7 +33,7 @@ public class MainActivity extends AppCompatActivity
 
     /** URL of the guardian site for obtain the news */
     private static final String GUARDIAN_REQUEST_URL =
-            "https://content.guardianapis.com/search?q=debates&api-key=test&show-references=author";
+            "https://content.guardianapis.com/search?&show-tags=contributor&api-key=test";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

@@ -70,10 +70,11 @@ public final class QueryUtils {
 
         HttpURLConnection urlConnection = null;
         InputStream inputStream = null;
+        int timeBeforeTimeout = 15000;
         try {
             urlConnection = (HttpURLConnection) url.openConnection();
-            urlConnection.setReadTimeout(10000);
-            urlConnection.setConnectTimeout(15000);
+            urlConnection.setReadTimeout(timeBeforeTimeout);
+            urlConnection.setConnectTimeout(timeBeforeTimeout);
             urlConnection.setRequestMethod("GET");
             urlConnection.connect();
 
@@ -149,20 +150,20 @@ public final class QueryUtils {
 
                 String publicationDate = currentNews.getString("webPublicationDate");
                 if(publicationDate != null){
-                    JSONArray references = null;
+                    JSONArray tags = null;
 
                     try {
-                        references = currentNews.getJSONArray("references");
+                        tags = currentNews.getJSONArray("tags");
                     } catch (JSONException je) {
                         Log.e("QueryUtils", "Problem parsing the news JSON results", je);
                     }
-                    if (references != null && references.length() > 0) {
-                        for (int f = 0; f < references.length(); f++) {
-                            JSONObject currentReference = references.getJSONObject(f);
+                    if (tags != null && tags.length() > 0) {
+                        for (int f = 0; f < tags.length(); f++) {
+                            JSONObject currentReference = tags.getJSONObject(f);
 
-                            String author = currentReference.getString("id");
+                            String author = currentReference.getString("webTitle");
 
-                            if (author.contains("author")) {
+                            if (author != null) {
                                 News news = new News(sectionName, publicationDate, title, url, author);
                                 newsList.add(news);
                             }

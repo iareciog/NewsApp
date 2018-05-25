@@ -17,14 +17,14 @@ android:paddingStart="16dp">
         android:layout_marginStart="2dp"
         android:layout_weight="1"
         android:orientation="vertical">
-
         <TextView
             android:id="@+id/title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:ellipsize="end"
             android:fontFamily="sans-serif-medium"
-            android:maxLines="2"
+            android:maxLines="1"
+            android:textColor="@android:color/black"
             android:textAllCaps="true"
             android:textSize="14sp"
             tools:text="Title here" />
@@ -45,9 +45,8 @@ android:paddingStart="16dp">
             android:layout_height="wrap_content"
             android:ellipsize="end"
             android:maxLines="1"
-            android:textAllCaps="true"
             android:textSize="12sp"
-            tools:text="author" />
+            tools:text="Author" />
 
     </LinearLayout>
 
