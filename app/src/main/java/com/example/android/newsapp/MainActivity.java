@@ -41,9 +41,9 @@ public class MainActivity extends AppCompatActivity
         setContentView(R.layout.activity_main);
 
         // Find a reference to the {@link ListView} in the layout
-        ListView newsListView = (ListView) findViewById(R.id.list);
+        ListView newsListView = findViewById(R.id.list);
         // Find the {@link TextView} empty view in the layout
-        mEmptyStateTextView = (TextView) findViewById(R.id.empty_view);
+        mEmptyStateTextView = findViewById(R.id.empty_view);
         newsListView.setEmptyView(mEmptyStateTextView);
 
         // Create a new adapter that takes an empty list of news as input
@@ -119,7 +119,7 @@ public class MainActivity extends AppCompatActivity
     @Override
     public void onLoadFinished(Loader<List<News>> loader, List<News> earthquakes) {
         mEmptyStateTextView.setText(R.string.no_news);
-        ProgressBar progressBar = (ProgressBar) findViewById(R.id.loading_spinner);
+        ProgressBar progressBar = findViewById(R.id.loading_spinner);
         progressBar.setVisibility(View.GONE);
         mAdapter.clear();
 

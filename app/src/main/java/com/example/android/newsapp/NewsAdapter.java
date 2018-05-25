@@ -49,14 +49,14 @@ public class NewsAdapter extends ArrayAdapter<News> {
         News currentNews = getItem(position);
 
         if (currentNews != null) {
-            TextView titleView = (TextView) listItemView.findViewById(R.id.title);
+            TextView titleView = listItemView.findViewById(R.id.title);
             titleView.setText(currentNews.getTitle());
 
-            TextView categoryView = (TextView) listItemView.findViewById(R.id.category);
+            TextView categoryView = listItemView.findViewById(R.id.category);
             categoryView.setText(currentNews.getSectionName());
 
             // Find the TextView with view ID date
-            TextView dateView = (TextView) listItemView.findViewById(R.id.date);
+            TextView dateView = listItemView.findViewById(R.id.date);
             // Get the publication date
             String publicationDate = currentNews.getPublicationDate();
 
@@ -68,7 +68,7 @@ public class NewsAdapter extends ArrayAdapter<News> {
                 // Display the date of the current earthquake in that TextView
                 dateView.setText(formattedDate);
                 // Find the TextView with view ID time
-                TextView timeView = (TextView) listItemView.findViewById(R.id.time);
+                TextView timeView = listItemView.findViewById(R.id.time);
                 // Format the time string (i.e. "4:30PM")
                 String formattedTime = formatTime(formatDate);
                 // Display the time of the current earthquake in that TextView
@@ -79,7 +79,7 @@ public class NewsAdapter extends ArrayAdapter<News> {
             }
 
             // Find the TextView with view ID author
-            TextView authorView = (TextView) listItemView.findViewById(R.id.author);
+            TextView authorView = listItemView.findViewById(R.id.author);
             // Get the author
             String author = currentNews.getAuthor();
             if(author != null){
