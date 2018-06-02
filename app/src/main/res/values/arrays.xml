@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="settings_tag_label">
+        <item>@string/settings_tag_none_label</item>
+        <item>@string/settings_tag_politics_label</item>
+        <item>@string/settings_tag_education_label</item>
+        <item>@string/settings_tag_economy_label</item>
+    </string-array>
+
+    <string-array name="settings_tag_value">
+        <item>@string/settings_tag_none_value</item>
+        <item>@string/settings_tag_politics_value</item>
+        <item>@string/settings_tag_education_value</item>
+        <item>@string/settings_tag_economy_value</item>
+    </string-array>
+</resources>
